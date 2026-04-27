@@ -11,6 +11,9 @@ class TrafficLight extends Model
 
     protected $fillable = [
         'nama_persimpangan',
+        'latitude',
+        'longitude',
+        'cctv_url',
         'status',
         'durasi_merah',
         'durasi_kuning',

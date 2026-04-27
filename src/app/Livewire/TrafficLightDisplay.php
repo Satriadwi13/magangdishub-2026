@@ -8,72 +8,67 @@ use Carbon\Carbon;
 
 class TrafficLightDisplay extends Component
 {
-    public $currentStatus;
-    public $timeRemaining;
-    public $mode;
+    public $selectedNode = null;
+
+    public function selectNode($id)
+    {
+        $this->selectedNode = $id;
+    }
+
+    public function closeNode()
+    {
+        $this->selectedNode = null;
+    }
 
     public function checkStatus()
     {
-        $tl = TrafficLight::first();
-        if (!$tl) return;
+        $trafficLights = TrafficLight::all();
 
-        $this->mode = $tl->mode;
-
-        if ($this->mode === 'manual') {
-            $this->currentStatus = $tl->status;
-            $this->timeRemaining = 0;
-            return;
-        }
-
-        // Mode Otomatis
-        if (!$tl->last_changed_at) {
-            $tl->last_changed_at = now();
-            $tl->save();
-        }
-
-        $this->currentStatus = $tl->status;
-        $duration = (int) $tl->{"durasi_" . $tl->status};
-        
-        $elapsed = now()->diffInSeconds($tl->last_changed_at);
-
-        if ($elapsed >= $duration) {
-            $nextStatus = 'merah';
-            if ($tl->status === 'merah') {
-                $nextStatus = 'hijau';
-            } elseif ($tl->status === 'hijau') {
-                $nextStatus = 'kuning';
+        foreach ($trafficLights as $tl) {
+            if ($tl->mode === 'manual') {
+                continue;
             }
 
-            $tl->status = $nextStatus;
-            $tl->last_changed_at = now();
-            $tl->save();
-            
-            $this->currentStatus = $nextStatus;
-            $this->timeRemaining = (int) $tl->{"durasi_" . $nextStatus};
-        } else {
-            $this->timeRemaining = $duration - $elapsed;
+            // Mode Otomatis
+            if (!$tl->last_changed_at) {
+                $tl->last_changed_at = now();
+                $tl->save();
+                continue;
+            }
+
+            $duration = (int) $tl->{"durasi_" . $tl->status};
+            $elapsed = now()->diffInSeconds($tl->last_changed_at);
+
+            if ($elapsed >= $duration) {
+                $nextStatus = 'merah';
+                if ($tl->status === 'merah') {
+                    $nextStatus = 'hijau';
+                } elseif ($tl->status === 'hijau') {
+                    $nextStatus = 'kuning';
+                }
+
+                $tl->status = $nextStatus;
+                $tl->last_changed_at = now();
+                $tl->save();
+            }
         }
     }
 
     public function render()
     {
-        $tl = TrafficLight::first();
-        
-        // Initial setup for view
-        if ($tl && $this->currentStatus === null) {
-            $this->currentStatus = $tl->status;
-            $this->mode = $tl->mode;
-            if ($this->mode === 'otomatis') {
+        $trafficLights = TrafficLight::all()->map(function ($tl) {
+            if ($tl->mode === 'otomatis') {
                 $duration = (int) $tl->{"durasi_" . $tl->status};
                 $elapsed = $tl->last_changed_at ? now()->diffInSeconds($tl->last_changed_at) : 0;
-                $this->timeRemaining = max(0, $duration - $elapsed);
+                $tl->timeRemaining = max(0, $duration - $elapsed);
             } else {
-                $this->timeRemaining = 0;
+                $tl->timeRemaining = 0;
             }
-        }
+            return $tl;
+        });
 
         return view('livewire.traffic-light-display', [
-            'trafficLight' => $tl
+            'trafficLights' => $trafficLights
         ]);
     }
 }

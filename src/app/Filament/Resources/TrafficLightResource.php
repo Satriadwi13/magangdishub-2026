@@ -26,6 +26,15 @@ class TrafficLightResource extends Resource
                     ->label('Nama Persimpangan')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('latitude')
+                    ->label('Latitude Peta')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('longitude')
+                    ->label('Longitude Peta')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('cctv_url')
+                    ->label('URL Embed CCTV')
+                    ->maxLength(255),
                 Forms\Components\Select::make('status')
                     ->label('Status Menengah (Initial)')
                     ->options([
@@ -38,7 +47,7 @@ class TrafficLightResource extends Resource
                     ->label('Durasi Merah (detik)')
                     ->numeric()
                     ->required()
-                    ->default(10)
+                    ->default(20)
                     ->minValue(1),
                 Forms\Components\TextInput::make('durasi_kuning')
                     ->label('Durasi Kuning (detik)')
@@ -50,7 +59,7 @@ class TrafficLightResource extends Resource
                     ->label('Durasi Hijau (detik)')
                     ->numeric()
                     ->required()
-                    ->default(10)
+                    ->default(30)
                     ->minValue(1),
                 Forms\Components\Select::make('mode')
                     ->label('Mode')

@@ -13,22 +13,67 @@ class TrafficLightDashboardSeeder extends Seeder
     public function run(): void
     {
         $locations = [
-            'Cawang',
-            'Cakung',
-            'Kosambi',
-            'Surabaya',
-            'Semarang',
-            'Bali'
+            [
+                'nama' => 'Cawang',
+                'lat' => '-6.2425',
+                'lng' => '106.8686',
+                'cctv' => 'https://www.youtube.com/embed/1EiC9bvVGnk?autoplay=1&mute=1&loop=1'
+            ],
+            [
+                'nama' => 'Cakung',
+                'lat' => '-6.1824',
+                'lng' => '106.9422',
+                'cctv' => 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1'
+            ],
+            [
+                'nama' => 'Kosambi',
+                'lat' => '-6.1704',
+                'lng' => '106.7465',
+                'cctv' => 'https://www.youtube.com/embed/1EiC9bvVGnk?autoplay=1&mute=1&loop=1'
+            ],
+            [
+                'nama' => 'Surabaya',
+                'lat' => '-7.2504',
+                'lng' => '112.7688',
+                'cctv' => 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1'
+            ],
+            [
+                'nama' => 'Semarang',
+                'lat' => '-6.9667',
+                'lng' => '110.4167',
+                'cctv' => 'https://www.youtube.com/embed/1EiC9bvVGnk?autoplay=1&mute=1&loop=1'
+            ],
+            [
+                'nama' => 'Bali',
+                'lat' => '-8.4095',
+                'lng' => '115.1889',
+                'cctv' => 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1'
+            ],
+            [
+                'nama' => 'Bundaran HI',
+                'lat' => '-6.1949',
+                'lng' => '106.8230',
+                'cctv' => 'https://www.youtube.com/embed/1EiC9bvVGnk?autoplay=1&mute=1&loop=1'
+            ],
+            [
+                'nama' => 'Monas',
+                'lat' => '-6.1754',
+                'lng' => '106.8272',
+                'cctv' => 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1'
+            ]
         ];
 
-        foreach ($locations as $location) {
-            TrafficLight::firstOrCreate(
-                ['nama_persimpangan' => $location],
+        foreach ($locations as $loc) {
+            TrafficLight::updateOrCreate(
+                ['nama_persimpangan' => $loc['nama']],
                 [
+                    'latitude' => $loc['lat'],
+                    'longitude' => $loc['lng'],
+                    'cctv_url' => $loc['cctv'],
                     'status' => 'merah',
-                    'durasi_merah' => 10,
+                    'durasi_merah' => 20,
                     'durasi_kuning' => 3,
-                    'durasi_hijau' => 7,
+                    'durasi_hijau' => 30,
                     'mode' => 'otomatis',
                     'last_changed_at' => now(),
                 ]
