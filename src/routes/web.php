@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Artisan;
 
 /* NOTE: Do Not Remove
 / Livewire asset handling if using sub folder in domain
@@ -18,6 +18,12 @@ Livewire::setScriptRoute(function ($handle) {
 /*
 / END
 */
-Route::get('/', function () {
-    return view('welcome');
+use App\Livewire\TrafficLightDisplay;
+
+Route::get('/', TrafficLightDisplay::class);
+
+Route::get('/migrate', function() {
+    Artisan::call('migrate:refresh', ['--force' => true]);
+    return 'Migrasi Refresh berhasil dieksekusi!';
 });
+
