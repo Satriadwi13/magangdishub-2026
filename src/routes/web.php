@@ -23,7 +23,12 @@ use App\Livewire\TrafficLightDisplay;
 Route::get('/', TrafficLightDisplay::class);
 
 Route::get('/migrate', function() {
-    Artisan::call('migrate:refresh', ['--force' => true]);
-    return 'Migrasi Refresh berhasil dieksekusi!';
+    Artisan::call('migrate:refresh', ['--force' => true, '--seed' => true]);
+    return 'Migrasi Refresh dan Seeding berhasil dieksekusi!';
+});
+
+Route::get('/clear-cache', function() {
+    Artisan::call('view:clear');
+    return 'View cache cleared! Silakan kembali ke halaman utama dan refresh.';
 });
 

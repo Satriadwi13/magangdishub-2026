@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama_persimpangan');
             $table->enum('status', ['merah', 'kuning', 'hijau'])->default('merah');
-            $table->integer('durasi_merah')->default(10);
-            $table->integer('durasi_kuning')->default(3);
-            $table->integer('durasi_hijau')->default(7);
+            $table->integer('durasi_merah')->default(60);
+            $table->integer('durasi_kuning')->default(10);
+            $table->integer('durasi_hijau')->default(60);
             $table->enum('mode', ['otomatis', 'manual'])->default('otomatis');
             $table->timestamp('last_changed_at')->nullable();
             $table->timestamps();

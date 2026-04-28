@@ -1,4 +1,4 @@
-<div wire:poll.1000ms="checkStatus" class="min-h-screen bg-slate-950 font-sans relative overflow-hidden text-slate-200">
+<div wire:poll.1s class="min-h-screen bg-slate-950 font-sans relative overflow-hidden text-slate-200">
     
     <!-- Professional ambient background glow -->
     <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/10 blur-[120px] pointer-events-none"></div>
@@ -32,10 +32,10 @@
                 @foreach($trafficLights as $tl)
                     @php
                         $statusInfo = [
-                            'merah' => ['color' => 'text-red-500', 'glow' => 'shadow-[0_0_20px_rgba(239,68,68,0.6)]', 'text' => 'BERHENTI'],
-                            'kuning' => ['color' => 'text-yellow-400', 'glow' => 'shadow-[0_0_20px_rgba(250,204,21,0.6)]', 'text' => 'HATI-HATI'],
-                            'hijau' => ['color' => 'text-green-500', 'glow' => 'shadow-[0_0_20px_rgba(34,197,94,0.6)]', 'text' => 'JALAN'],
-                        ][$tl->status] ?? ['color' => 'text-slate-500', 'glow' => '', 'text' => 'OFFLINE'];
+                            'merah' => ['color' => 'text-red-500', 'glow' => 'shadow-[0_0_20px_rgba(239,68,68,0.6)]', 'text' => 'BERHENTI', 'pill' => 'bg-red-500/10 text-red-400 border-red-500/20'],
+                            'kuning' => ['color' => 'text-yellow-400', 'glow' => 'shadow-[0_0_20px_rgba(250,204,21,0.6)]', 'text' => 'HATI-HATI', 'pill' => 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'],
+                            'hijau' => ['color' => 'text-green-500', 'glow' => 'shadow-[0_0_20px_rgba(34,197,94,0.6)]', 'text' => 'JALAN', 'pill' => 'bg-green-500/10 text-green-400 border-green-500/20'],
+                        ][$tl->status] ?? ['color' => 'text-slate-500', 'glow' => '', 'text' => 'OFFLINE', 'pill' => 'bg-slate-500/10 text-slate-400 border-slate-500/20'];
                     @endphp
 
                     <!-- Traffic Light Card -->
@@ -50,8 +50,8 @@
                                     ID Node: #{{ str_pad($tl->id, 3, '0', STR_PAD_LEFT) }}
                                 </div>
                             </div>
-                            <div class="px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest border {{ $tl->mode === 'otomatis' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-purple-500/10 text-purple-400 border-purple-500/20' }}">
-                                {{ $tl->mode }}
+                            <div class="px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest border {{ $statusInfo['pill'] }}">
+                                {{ $statusInfo['text'] }}
                             </div>
                         </div>
 
@@ -61,8 +61,8 @@
                             <!-- Large Status Text -->
                             <div class="text-center w-full">
                                 <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mb-1 block">Status Terkini</span>
-                                <span class="text-2xl font-black {{ $statusInfo['color'] }} tracking-widest drop-shadow-md block">
-                                    {{ $statusInfo['text'] }}
+                                <span class="text-2xl font-black {{ $tl->mode === 'otomatis' ? 'text-blue-500' : 'text-purple-500' }} tracking-widest drop-shadow-md block">
+                                    {{ strtoupper($tl->mode) }}
                                 </span>
                             </div>
 
@@ -134,7 +134,11 @@
                                     <p class="text-xs text-slate-400 tracking-widest uppercase">ID Node: #{{ str_pad($tl->id, 3, '0', STR_PAD_LEFT) }}</p>
                                 </div>
                                 <div class="flex flex-col items-center gap-1">
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase">Status</span>
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase">Mode</span>
+                                    <span class="px-3 py-1 rounded text-xs font-bold {{ $tl->mode === 'otomatis' ? 'bg-blue-500' : 'bg-purple-500' }} text-white shadow-md">{{ strtoupper($tl->mode) }}</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-1">
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase">Status Lampu</span>
                                     <span class="px-3 py-1 rounded text-xs font-bold {{ $statusInfo['bg'] }} text-white shadow-md">{{ $statusInfo['text'] }}</span>
                                 </div>
                                 <div class="flex flex-col items-center gap-1">

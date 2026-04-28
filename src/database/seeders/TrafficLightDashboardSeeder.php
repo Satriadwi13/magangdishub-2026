@@ -71,9 +71,9 @@ class TrafficLightDashboardSeeder extends Seeder
                     'longitude' => $loc['lng'],
                     'cctv_url' => $loc['cctv'],
                     'status' => 'merah',
-                    'durasi_merah' => 20,
-                    'durasi_kuning' => 3,
-                    'durasi_hijau' => 30,
+                    'durasi_merah' => 60,
+                    'durasi_kuning' => 10,
+                    'durasi_hijau' => 60,
                     'mode' => 'otomatis',
                     'last_changed_at' => now(),
                 ]

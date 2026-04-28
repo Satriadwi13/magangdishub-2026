@@ -47,19 +47,19 @@ class TrafficLightResource extends Resource
                     ->label('Durasi Merah (detik)')
                     ->numeric()
                     ->required()
-                    ->default(20)
+                    ->default(60)
                     ->minValue(1),
                 Forms\Components\TextInput::make('durasi_kuning')
                     ->label('Durasi Kuning (detik)')
                     ->numeric()
                     ->required()
-                    ->default(3)
+                    ->default(10)
                     ->minValue(1),
                 Forms\Components\TextInput::make('durasi_hijau')
                     ->label('Durasi Hijau (detik)')
                     ->numeric()
                     ->required()
-                    ->default(30)
+                    ->default(60)
                     ->minValue(1),
                 Forms\Components\Select::make('mode')
                     ->label('Mode')
